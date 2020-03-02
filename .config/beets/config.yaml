@@ -1,0 +1,47 @@
+directory: /home/tru/music
+library: /home/tru/.config/library.db
+#This sets where I want my music stored (directory), and where the database file is located (library).
+
+#plugins: the fetchart embedart scrub
+#These are the plugins that I use to maintain my metadata. "the" is able to recognize prefixes in artist names, and move them to the end of the string. "fetchart" and "embedart" are relatively self-explanatory. "scrub" clears all metadata before applying the new, clean metadata.
+
+import:
+    move: yes
+#When I use the "import" command, I want beets to move the files, not copy them. This is because I run beets in my downloads folder, where I download all of my music to, and want those files to be moved neatly into my music drive.
+    
+ui:
+    color: yes
+#Beets color-codes its information in the command prompt. I found this somewhat ugly to look at, so I turned it off.
+    
+per_disc_numbering: yes
+#By default, if there are two discs in an album, beets will ignore the fact that there's two discs. If there's 10 songs in disc 1, and 10 in disc 2, the first track of disc 2 is numbered as 11. I want my discs tagged separately, so track 1 of disc 2 starts over as track 1.
+
+threaded: yes    
+#Self-explanatory
+
+paths:
+    default: %the{$albumartist}/$original_year-$original_month-$original_day - $album%aunique{} [%upper{$albumtype}] (%upper{$format})/$disc-$track - $title ($bitrate)
+    singleton: "#Non-Album/$artist/$title"
+    comp: "#Compilations/%the{$albumartist}/$original_year-$original_month - $album%aunique{} [%upper{$albumtype}] (%upper{$format})/$disc-$track - $title ($bitrate)"
+
+#This is perhaps the hardest to understand part of beets, even for me. I want a complicated folder structure for my library. This is where beets really shines; you can make it sort music however you want. Let me explain each part of this configuration in full.
+
+"%the{$albumartist}/": This is the parent directory of everything. It is simply the "album artist" tag, argumented with the "the" plugin to move articles to the end of the string. So, "The Black Keys" becomes "Black Keys, The". This assures that my music library stays in alphabetical order.
+
+"$original_year-$original_month-$original_day - $album%aunique{} [%upper{$albumtype}] (%upper{$format})": Looking at it, this is a huge mess. This is the next sub-folder, under the album artist folder. Basically, it puts the date first (so my releases are in chronological order), adds a dash, puts the album's name, adds the album type (EP, Single, or Album) in all capital letters in parentheses, and then adds the file format of the album (MP3 or FLAC) in all caps in brackets. It looks complicated, but the result is clean and simple.
+
+"$disc-$track - $title ($bitrate)": This is the actual music file, under the release folder. It's fairly simple. It puts the disc and track, then a dash, then the title, and then the bitrate of the file in parentheses.
+
+All of these extremely complicated arguments have a very nice and clean result. For example, the path to the song "Bodak Yellow (Money Moves)" by Cardi B is as follows:
+
+G:\Music\Cardi B\2017-06-16 - Bodak Yellow (Money Moves) [SINGLE] (MP3)\01-01 - Bodak Yellow (Money Moves) (320kbps).mp3
+
+fetchart:
+    midwidth: 400
+    enforce_ratio: 10px
+    sources: filesystem itunes amazon albumart coverart
+#This is the arguments for the fetchart plugin. The minimum width of the downloaded album art is 400 pixels. The maximum deviation from perfectly square the photo can have is 10px, either vertically or horizontally. The sources are a list of where beets will look for album art, starting at the left and going to the right. I put filesystem first so beets checks my files for a cover first, and only goes onto the internet to find one if there isn't one already.
+
+embedart:
+    auto: no
+#Embed art is great, but it slows down the  

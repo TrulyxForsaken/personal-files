@@ -237,7 +237,7 @@ if ! [[ ${ZSH_VERSION} == 3.1.<7->*      \
     printf '-!- advanced features in all supported versions.\n'
     printf '-!-\n'
     printf '-!- However, you are running zsh version %s.\n' "$ZSH_VERSION"
-    printf '-!-\n'
+    printf '-!-\n'ZSH_PROFILE_RC=1 zsh
     printf '-!- While this *may* work, it might as well fail.\n'
     printf '-!- Please consider updating to at least version 3.1.7 of zsh.\n'
     printf '-!-\n'
@@ -252,7 +252,7 @@ fi
 
 # autoload wrapper - use this one instead of autoload directly
 # We need to define this function as early as this, because autoloading
-# 'is-at-least()' needs it.
+ 'is-at-least()' needs it
 function zrcautoload () {
     emulate -L zsh
     setopt extended_glob
@@ -284,7 +284,7 @@ function zrcautoload () {
 function add-zsh-hook () {
     # Add to HOOK the given FUNCTION.
     # HOOK is one of chpwd, precmd, preexec, periodic, zshaddhistory,
-    # zshexit, zsh_directory_name (the _functions subscript is not required).
+     zshexit, zsh_directory_name (the _functions subscript is not required).
     #
     # With -d, remove the function from the hook instead; delete the hook
     # variable if it is empty.
